@@ -1,0 +1,134 @@
+1	import { createFileRoute } from '@tanstack/react-router'
+2	import { useState } from 'react'
+3	import { Mail, Send } from 'lucide-react'
+4	
+5	export const Route = createFileRoute('/contact')({
+6	  component: Contact,
+7	})
+8	
+9	function Contact() {
+10	  const [submitted, setSubmitted] = useState(false)
+11	
+12	  if (submitted) {
+13	    return (
+14	      <div className="min-h-screen flex items-center justify-center">
+15	        <div className="text-center max-w-md mx-auto px-4">
+16	          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+17	            <Mail className="w-8 h-8 text-green-600" />
+18	          </div>
+19	          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+20	            Message Sent!
+21	          </h2>
+22	          <p className="text-gray-600 mb-6">
+23	            Thanks for reaching out. I'll get back to you as soon as possible.
+24	          </p>
+25	          <button
+26	            onClick={() => setSubmitted(false)}
+27	            className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+28	          >
+29	            Send Another Message
+30	          </button>
+31	        </div>
+32	      </div>
+33	    )
+34	  }
+35	
+36	  return (
+37	    <div className="min-h-screen">
+38	      <div className="max-w-2xl mx-auto px-4 py-12">
+39	        <h1 className="text-4xl font-bold text-gray-900 mb-2">Contact</h1>
+40	        <p className="text-gray-600 mb-8">
+41	          Have a question or want to work together? Drop me a message.
+42	        </p>
+43	
+44	        <form
+45	          name="contact"
+46	          method="POST"
+47	          data-netlify="true"
+48	          netlify-honeypot="bot-field"
+49	          onSubmit={(e) => {
+50	            e.preventDefault()
+51	            const form = e.currentTarget
+52	            const formData = new FormData(form)
+53	            fetch('/contact.html', {
+54	              method: 'POST',
+55	              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+56	              body: new URLSearchParams(
+57	                formData as unknown as Record<string, string>,
+58	              ).toString(),
+59	            })
+60	              .then(() => setSubmitted(true))
+61	          }}
+62	          className="space-y-6"
+63	        >
+64	          <input type="hidden" name="form-name" value="contact" />
+65	          <p hidden>
+66	            <label>
+67	              Don't fill this out: <input name="bot-field" />
+68	            </label>
+69	          </p>
+70	
+71	          <div>
+72	            <label
+73	              htmlFor="name"
+74	              className="block text-sm font-medium text-gray-700 mb-1"
+75	            >
+76	              Name
+77	            </label>
+78	            <input
+79	              type="text"
+80	              id="name"
+81	              name="name"
+82	              required
+83	              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+84	              placeholder="Your name"
+85	            />
+86	          </div>
+87	
+88	          <div>
+89	            <label
+90	              htmlFor="email"
+91	              className="block text-sm font-medium text-gray-700 mb-1"
+92	            >
+93	              Email
+94	            </label>
+95	            <input
+96	              type="email"
+97	              id="email"
+98	              name="email"
+99	              required
+100	              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+101	              placeholder="your@email.com"
+102	            />
+103	          </div>
+104	
+105	          <div>
+106	            <label
+107	              htmlFor="message"
+108	              className="block text-sm font-medium text-gray-700 mb-1"
+109	            >
+110	              Message
+111	            </label>
+112	            <textarea
+113	              id="message"
+114	              name="message"
+115	              required
+116	              rows={6}
+117	              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none"
+118	              placeholder="Your message..."
+119	            />
+120	          </div>
+121	
+122	          <button
+123	            type="submit"
+124	            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+125	          >
+126	            <Send size={16} />
+127	            Send Message
+128	          </button>
+129	        </form>
+130	      </div>
+131	    </div>
+132	  )
+133	}
+134
