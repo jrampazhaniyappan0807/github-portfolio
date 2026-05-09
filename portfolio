@@ -1,0 +1,10 @@
+1	---
+2	title: "Project 2"
+3	description: "Description of project 2."
+4	tags: ["Tag 1", "Tag 4", "Tag 5"]
+5	github: "https://github.com/your-username/project-2"
+6	liveUrl: "https://project-2.example.com"
+7	---
+8	
+9	Details about project 2 and what it does.
+10
