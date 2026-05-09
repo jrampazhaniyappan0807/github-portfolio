@@ -1,0 +1,66 @@
+1	import { createFileRoute, Link } from '@tanstack/react-router'
+2	import { allBlogs } from 'content-collections'
+3	import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+4	import { Badge } from '@/components/ui/badge'
+5	import { Calendar } from 'lucide-react'
+6	
+7	export const Route = createFileRoute('/')({
+8	  component: BlogIndex,
+9	})
+10	
+11	function BlogIndex() {
+12	  const posts = [...allBlogs].sort(
+13	    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+14	  )
+15	
+16	  return (
+17	    <div className="min-h-screen">
+18	      <div className="max-w-4xl mx-auto px-4 py-12">
+19	        <h1 className="text-4xl font-bold text-gray-900 mb-2">Blog</h1>
+20	        <p className="text-gray-600 mb-8">
+21	          Thoughts on web development, design, and technology.
+22	        </p>
+23	
+24	        <div className="space-y-6">
+25	          {posts.map((post) => (
+26	            <Link
+27	              key={post._meta.path}
+28	              to="/blog/$slug"
+29	              params={{ slug: post._meta.path }}
+30	              className="block"
+31	            >
+32	              <Card className="cursor-pointer">
+33	                <CardHeader>
+34	                  <CardTitle className="text-xl">{post.title}</CardTitle>
+35	                  <div className="flex items-center gap-2 text-sm text-gray-500">
+36	                    <Calendar size={14} />
+37	                    <time>
+38	                      {new Date(post.date).toLocaleDateString('en-US', {
+39	                        year: 'numeric',
+40	                        month: 'long',
+41	                        day: 'numeric',
+42	                      })}
+43	                    </time>
+44	                    <span>·</span>
+45	                    <span>{post.author}</span>
+46	                  </div>
+47	                </CardHeader>
+48	                <CardContent>
+49	                  <p className="text-gray-600 mb-4">{post.summary}</p>
+50	                  <div className="flex flex-wrap gap-2">
+51	                    {post.tags.map((tag) => (
+52	                      <Badge key={tag} variant="secondary">
+53	                        {tag}
+54	                      </Badge>
+55	                    ))}
+56	                  </div>
+57	                </CardContent>
+58	              </Card>
+59	            </Link>
+60	          ))}
+61	        </div>
+62	      </div>
+63	    </div>
+64	  )
+65	}
+66
