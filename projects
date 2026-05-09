@@ -1,0 +1,69 @@
+1	import { createFileRoute } from '@tanstack/react-router'
+2	import { allProjects } from 'content-collections'
+3	import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+4	import { Badge } from '@/components/ui/badge'
+5	import { ExternalLink, Github } from 'lucide-react'
+6	
+7	export const Route = createFileRoute('/projects')({
+8	  component: Projects,
+9	})
+10	
+11	function Projects() {
+12	  return (
+13	    <div className="min-h-screen">
+14	      <div className="max-w-4xl mx-auto px-4 py-12">
+15	        <h1 className="text-4xl font-bold text-gray-900 mb-2">Projects</h1>
+16	        <p className="text-gray-600 mb-8">
+17	          A selection of projects I've built and contributed to.
+18	        </p>
+19	
+20	        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+21	          {allProjects.map((project) => (
+22	            <Card key={project._meta.path} className="flex flex-col">
+23	              <CardHeader>
+24	                <CardTitle className="text-xl">{project.title}</CardTitle>
+25	              </CardHeader>
+26	              <CardContent className="flex-1 flex flex-col">
+27	                <p className="text-gray-600 mb-4 flex-1">
+28	                  {project.description}
+29	                </p>
+30	                <div className="flex flex-wrap gap-2 mb-4">
+31	                  {project.tags.map((tag) => (
+32	                    <Badge key={tag} variant="secondary">
+33	                      {tag}
+34	                    </Badge>
+35	                  ))}
+36	                </div>
+37	                <div className="flex gap-3">
+38	                  {project.github && (
+39	                    <a
+40	                      href={project.github}
+41	                      target="_blank"
+42	                      rel="noopener noreferrer"
+43	                      className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+44	                    >
+45	                      <Github size={16} />
+46	                      GitHub
+47	                    </a>
+48	                  )}
+49	                  {project.liveUrl && (
+50	                    <a
+51	                      href={project.liveUrl}
+52	                      target="_blank"
+53	                      rel="noopener noreferrer"
+54	                      className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 transition-colors"
+55	                    >
+56	                      <ExternalLink size={16} />
+57	                      Live Demo
+58	                    </a>
+59	                  )}
+60	                </div>
+61	              </CardContent>
+62	            </Card>
+63	          ))}
+64	        </div>
+65	      </div>
+66	    </div>
+67	  )
+68	}
+69
