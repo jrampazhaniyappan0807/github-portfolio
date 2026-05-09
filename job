@@ -1,0 +1,18 @@
+1	---
+2	jobTitle: Job Title 2
+3	company: Company 2
+4	location: Remote
+5	startDate: 2022-01-01
+6	endDate: 2022-12-31
+7	summary: Summary of responsibilities and achievements for this role.
+8	description:
+9	tags:
+10	  [
+11	    "Skill 1",
+12	    "Skill 4",
+13	    "Skill 5",
+14	  ]
+15	---
+16	
+17	Description of work done in this role.
+18
