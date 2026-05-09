@@ -1,0 +1,172 @@
+1	# AGENTS.md
+2	
+3	This document provides an overview of the project structure for developers and AI agents working on this codebase.
+4	
+5	## Project Overview
+6	
+7	An interactive resume/portfolio application with an AI-powered assistant. Built with TanStack Start and deployed on Netlify.
+8	
+9	### Tech Stack
+10	
+11	| Layer | Technology |
+12	|-------|------------|
+13	| Framework | TanStack Start |
+14	| Frontend | React 19, TanStack Router v1 |
+15	| Build | Vite 7 |
+16	| Styling | Tailwind CSS 4 |
+17	| UI Components | Radix UI + custom components |
+18	| Content | Content Collections (type-safe markdown) |
+19	| AI | TanStack AI with multi-provider support |
+20	| Language | TypeScript 5.7 (strict mode) |
+21	| Deployment | Netlify |
+22	
+23	## Directory Structure
+24	
+25	```
+26	├── content
+27	│   ├── blog
+28	│   │   ├── getting-started-with-tanstack.md  # Blog post.
+29	│   │   ├── react-19-features.md  # Blog post.
+30	│   │   └── tailwind-css-v4-guide.md  # Blog post.
+31	│   ├── education
+32	│   │   └── code-school.md  # Education content: Code School.
+33	│   ├── jobs
+34	│   │   └── initech-junior.md  # Job content: Initech Junior.
+35	│   └── projects
+36	│       ├── portfolio-site.md  # Project content.
+37	│       └── task-manager.md  # Project content.
+38	├── public
+39	│   ├── contact.html  # Static contact form.
+40	│   ├── favicon.ico
+41	│   ├── headshot-on-white.jpg
+42	│   ├── tanstack-circle-logo.png
+43	│   └── tanstack-word-logo-white.svg  # TanStack wordmark logo (white) used in header/nav.
+44	├── src
+45	│   ├── components
+46	│   │   ├── ui
+47	│   │   │   ├── badge.tsx  # Badge component.
+48	│   │   │   ├── card.tsx  # Card component.
+49	│   │   │   ├── checkbox.tsx  # Checkbox component.
+50	│   │   │   ├── hover-card.tsx  # HoverCard component.
+51	│   │   │   └── separator.tsx  # Separator component.
+52	│   │   ├── Header.tsx  # Header.
+53	│   │   ├── HeaderNav.tsx  # Navigation sidebar template: mobile menu, Home link, add-on routes; EJS-driven for dynamic route generation.
+54	│   │   └── ResumeAssistant.tsx  # Resume AI assistant.
+55	│   ├── lib
+56	│   │   ├── resume-ai-hook.ts  # useResumeChat hook.
+57	│   │   ├── resume-tools.ts  # AI tools: getJobsBySkill, getAllJobs, getAllEducation, searchExperience.
+58	│   │   └── utils.ts  # cn() helper.
+59	│   ├── routes
+60	│   │   ├── blog
+61	│   │   │   └── $slug.tsx  # Blog post detail.
+62	│   │   ├── __root.tsx  # Root layout.
+63	│   │   ├── api.resume-chat.ts  # POST handler for resume AI chat with getJobsBySkill, getAllJobs, etc.
+64	│   │   ├── contact.tsx  # Contact page.
+65	│   │   ├── index.tsx  # Portfolio home: blog index.
+66	│   │   ├── projects.tsx  # Projects page.
+67	│   │   └── resume.tsx  # Resume page with ResumeAssistant.
+68	│   ├── router.tsx  # TanStack Router setup: creates router from generated routeTree with scroll restoration.
+69	│   └── styles.css  # Global styles.
+70	├── .gitignore  # Template for .gitignore: node_modules, dist, .env, .netlify, .tanstack, etc.
+71	├── AGENTS.md  # This document provides an overview of the project structure for developers and AI agents working on this codebase.
+72	├── content-collections.ts  # Content Collections: jobs, education, blog, projects schemas.
+73	├── netlify.toml  # Netlify deployment config: build command (vite build), publish directory (dist/client), and dev server settings (port 8888, target 3000).
+74	├── package.json  # Project manifest with TanStack Start, React 19, Vite 7, Tailwind CSS 4, and Netlify plugin dependencies; defines dev and build scripts.
+75	├── pnpm-lock.yaml
+76	├── tsconfig.json  # TypeScript config: ES2022 target, strict mode, @/* path alias for src/*, bundler module resolution.
+77	└── vite.config.ts  # Vite config template: TanStack Start, React, Tailwind, Netlify plugin, and optional add-on integrations; processed by EJS.
+78	```
+79	
+80	## Key Concepts
+81	
+82	### File-Based Routing (TanStack Router)
+83	
+84	Routes are defined by files in `src/routes/`:
+85	
+86	- `__root.tsx` - Root layout wrapping all pages
+87	- `index.tsx` - Route for `/`
+88	- `api.*.ts` - Server API endpoints (e.g., `api.resume-chat.ts` → `/api/resume-chat`)
+89	
+90	### Component Architecture
+91	
+92	**UI Primitives** (`src/components/ui/`):
+93	- Radix UI-based, Tailwind-styled
+94	- Card, Badge, Checkbox, Separator, HoverCard
+95	
+96	**Feature Components** (`src/components/`):
+97	- Header, HeaderNav, ResumeAssistant
+98	
+99	## Configuration Files
+100	
+101	| File | Purpose |
+102	|------|---------|
+103	| `vite.config.ts` | Vite plugins: TanStack Start, Netlify, Tailwind, Content Collections |
+104	| `tsconfig.json` | TypeScript config with `@/*` path alias for `src/*` |
+105	| `netlify.toml` | Build command, output directory, dev server settings |
+106	| `content-collections.ts` | Zod schemas for jobs and education frontmatter |
+107	| `styles.css` | Tailwind imports + CSS custom properties (oklch colors) |
+108	
+109	## Development Commands
+110	
+111	```bash
+112	npm run dev      # Start dev server
+113	npm run build    # Production build
+114	npm run preview  # Preview production build
+115	```
+116	
+117	## Conventions
+118	
+119	### Naming
+120	- Components: PascalCase
+121	- Utilities/hooks: camelCase
+122	- Routes: kebab-case files
+123	
+124	### Styling
+125	- Tailwind CSS utility classes
+126	- `cn()` helper for conditional class merging
+127	- CSS variables for theme tokens in `styles.css`
+128	
+129	### TypeScript
+130	- Strict mode enabled
+131	- Import paths use `@/` alias
+132	- Zod for runtime validation
+133	- Type-only imports with `type` keyword
+134	
+135	### State Management
+136	- React hooks for local state
+137	- Zustand if you need it for global state
+138	### Portfolio Integration
+139	
+140	Developer portfolio with Content Collections (jobs, education, blog, projects) and ResumeAssistant.
+141	
+142	**Content Collections:**
+143	- `jobs` - jobTitle, company, startDate, endDate, location, tags, content
+144	- `education` - school, summary, startDate, endDate, tags, content
+145	- `blog` - title, date, summary, tags, author, content
+146	- `projects` - title, description, tags, github, liveUrl, image, content
+147	
+148	**AI tools available (ResumeAssistant):**
+149	- `getJobsBySkill` - Query jobs by skill tag
+150	- `getAllJobs` - Get all work experience
+151	- `getAllEducation` - Get education history
+152	- `searchExperience` - Full-text search across resume
+153	
+154	**Routes:** /, /resume, /projects, /contact, /blog/$slug
+155	
+156	## Environment Variables
+157	
+158	For AI: ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, or OLLAMA_BASE_URL (same as ai add-on).
+159	
+160	## Application Name
+161	
+162	This starter uses "Application Name" as a placeholder throughout the UI and metadata. Replace it with the user's desired application name in the following locations:
+163	
+164	### UI Components
+165	- `src/components/Header.tsx` — app name displayed in the header
+166	- `src/components/HeaderNav.tsx` — app name in the mobile navigation header
+167	
+168	### SEO Metadata
+169	- `src/routes/__root.tsx` — the `title` field in the `head()` configuration
+170	
+171	Search for all occurrences of "Application Name" in the `src/` directory and replace with the user's application name.
+172
