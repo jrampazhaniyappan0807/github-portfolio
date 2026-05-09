@@ -1,0 +1,149 @@
+1	import { marked } from 'marked'
+2	
+3	import { createFileRoute } from '@tanstack/react-router'
+4	import { allJobs, allEducations } from 'content-collections'
+5	import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+6	import { Badge } from '@/components/ui/badge'
+7	import { Separator } from '@/components/ui/separator'
+8	import {
+9	  HoverCard,
+10	  HoverCardContent,
+11	  HoverCardTrigger,
+12	} from '@/components/ui/hover-card'
+13	
+14	export const Route = createFileRoute('/resume')({
+15	  component: App,
+16	})
+17	
+18	function App() {
+19	  return (
+20	    <div className="min-h-screen p-8 lg:p-12">
+21	      <div className="max-w-4xl mx-auto space-y-12">
+22	        <div className="text-center space-y-4">
+23	          <h1 className="text-5xl font-bold">
+24	            My Resume
+25	          </h1>
+26	          <p className="text-lg">
+27	            Professional Experience & Education
+28	          </p>
+29	          <Separator className="mt-8" />
+30	        </div>
+31	
+32	        {/* Career Summary */}
+33	        <Card>
+34	          <CardHeader>
+35	            <CardTitle className="text-2xl">
+36	              Career Summary
+37	            </CardTitle>
+38	          </CardHeader>
+39	          <CardContent>
+40	            <div className="flex items-center gap-8">
+41	              <p className="flex-1 leading-relaxed">
+42	                I am a passionate and driven professional seeking
+43	                opportunities that will leverage my extensive experience
+44	                in frontend development while providing continuous growth
+45	                and learning opportunities. My goal is to contribute to
+46	                innovative projects that challenge me to expand my skill
+47	                set and make meaningful impacts through technology.
+48	              </p>
+49	              <img
+50	                src="/headshot-on-white.jpg"
+51	                alt="Professional headshot"
+52	                className="w-44 h-52 rounded-2xl object-cover"
+53	              />
+54	            </div>
+55	          </CardContent>
+56	        </Card>
+57	
+58	        {/* Work Experience */}
+59	        <section className="space-y-6">
+60	          <h2 className="text-3xl font-semibold">
+61	            Work Experience
+62	          </h2>
+63	          <div className="space-y-6">
+64	            {allJobs.map((job) => (
+65	              <Card key={job.jobTitle}>
+66	                <CardHeader>
+67	                  <div className="flex justify-between items-start">
+68	                    <div className="space-y-2">
+69	                      <CardTitle className="text-xl">
+70	                        {job.jobTitle}
+71	                      </CardTitle>
+72	                      <p className="font-medium">
+73	                        {job.company} - {job.location}
+74	                      </p>
+75	                    </div>
+76	                    <Badge variant="secondary" className="text-sm">
+77	                      {job.startDate} - {job.endDate || 'Present'}
+78	                    </Badge>
+79	                  </div>
+80	                </CardHeader>
+81	                <CardContent>
+82	                  <p className="mb-6 leading-relaxed">
+83	                    {job.summary}
+84	                  </p>
+85	                  <div className="flex flex-wrap gap-2">
+86	                    {job.tags.map((tag) => (
+87	                      <HoverCard key={tag}>
+88	                        <HoverCardTrigger>
+89	                          <Badge variant="outline" className="cursor-pointer">
+90	                            {tag}
+91	                          </Badge>
+92	                        </HoverCardTrigger>
+93	                        <HoverCardContent className="w-64">
+94	                          <p className="text-sm">
+95	                            Experience with {tag} in professional development
+96	                          </p>
+97	                        </HoverCardContent>
+98	                      </HoverCard>
+99	                    ))}
+100	                  </div>
+101	                  {job.content && (
+102	                    <div
+103	                      className="mt-6 prose prose-sm max-w-none"
+104	                      dangerouslySetInnerHTML={{
+105	                        __html: marked(job.content),
+106	                      }}
+107	                    />
+108	                  )}
+109	                </CardContent>
+110	              </Card>
+111	            ))}
+112	          </div>
+113	        </section>
+114	
+115	        {/* Education */}
+116	        <section className="space-y-6">
+117	          <h2 className="text-3xl font-semibold">
+118	            Education
+119	          </h2>
+120	          <div className="space-y-6">
+121	            {allEducations.map((education) => (
+122	              <Card key={education.school}>
+123	                <CardHeader>
+124	                  <CardTitle className="text-xl">
+125	                    {education.school}
+126	                  </CardTitle>
+127	                </CardHeader>
+128	                <CardContent>
+129	                  <p className="leading-relaxed">
+130	                    {education.summary}
+131	                  </p>
+132	                  {education.content && (
+133	                    <div
+134	                      className="mt-6 prose prose-sm max-w-none"
+135	                      dangerouslySetInnerHTML={{
+136	                        __html: marked(education.content),
+137	                      }}
+138	                    />
+139	                  )}
+140	                </CardContent>
+141	              </Card>
+142	            ))}
+143	          </div>
+144	        </section>
+145	      </div>
+146	    </div>
+147	  )
+148	}
+149
